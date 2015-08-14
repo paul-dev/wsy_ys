@@ -1,0 +1,143 @@
+@charset "utf-8";
+/**
+ *珠宝街招商页面样式
+ * @wuyj
+ * www.zhubaojie.com
+ * 7-1-2015
+ **/
+
+/********create shop main********/
+.create-shop{width:1040px;margin:0 auto;margin-top:30px;}
+.create-steps{
+  width:650px;
+  margin:0 auto;
+}
+.zbjstone{width:160px;float:left;position:relative;}
+
+.zbjstone-icon{
+  position: relative;
+  margin: 0 auto;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+}
+.zbjstone-icon .zbjstone-bg{
+  position: absolute;
+  display: inline-block;
+  vertical-align: middle;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  text-align: center;
+  top:0;
+  left:0;
+}
+.zbjstone-icon .zbjstone-bg-bottom{
+  font-size:38px;
+  color:#efefef;
+  z-index:90;
+}
+.zbjstone-icon .zbjstone-bg-top{
+  font-size:30px;
+  color:#ccc;
+  z-index:100;
+}
+.zbjstone-text{
+  position: relative;
+  line-height: 38px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #ffffff;
+  font-style: normal;
+  z-index:200;
+}
+
+.zbjstone-line {
+  position:absolute;
+  top:17px;
+  left:90px;
+  width: 138px;
+  height: 6px;
+}
+.zbjstline-bg{
+  position:absolute;
+}
+.zbjstline-circle-top{
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  text-align: center;
+  top: -17px;
+  right: -27px;
+  font-size: 30px;
+  color: #ccc;
+}
+.zbjstline-bg-bottom{
+  width: 140px;
+  height: 6px;
+  top: -1px;
+  left: -1px;
+  background-color: #efefef;
+  z-index:90; 
+}
+.zbjstline-bg-top{
+  width: 140px;
+  top: 1px;
+  left: -3px;
+  height: 2px;
+  background-color: #f69;
+  z-index:95;
+}
+.zbjstline-bg-top-right{
+  width: 74px;
+  left: -96px;
+  top: 1px;
+  height: 2px;
+  background-color: #cccccc;
+  z-index:99;
+}
+.zbjstline-bg-top-left{
+  width: 74px;
+  top: 1px;
+  left: -3px;
+  height: 2px;
+  background-color: #cccccc;
+  z-index:99;
+}
+.zbjstone-label{
+  margin-top:10px;
+  text-align:center;
+}
+.zbjstone.first .zbjstline-bg-top-right,.zbjstone.last .zbjstline-bg-bottom,.zbjstone.last .zbjstline-bg-top,.zbjstone.last .zbjstline-bg-top-left,.zbjstone.active .zbjstline-bg-top-left,.zbjstone.active .zbjstline-bg-top-right{
+  display:none;
+}
+.zbjstone.active .zbjstone-icon .zbjstone-bg-top {
+  color: #f69;
+}
+
+.shop-title-tip{
+  background-color: #f7f7f7;
+  padding:10px;
+  font-weight: bold;
+}
+
+.creatshop-form .title {
+  color: #999;
+  margin-bottom: 10px;
+  padding-left:20px;
+}
+.creatshop-form .title span {
+  font-size: 14px;
+  color: #666;
+  font-weight: bold;
+  padding-right: 5px;
+}
+.creatshop-form .title .red {
+  vertical-align: middle;
+  color:#ff8fb5 !important;
+}
+.box-form-info{
+  border-bottom:1px dashed gainsboro;
+  margin-bottom:20px;
+}

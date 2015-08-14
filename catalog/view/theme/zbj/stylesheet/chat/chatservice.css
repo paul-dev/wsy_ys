@@ -1,0 +1,352 @@
+@charset "utf-8";
+/**
+ *
+ * @wuyj
+ * www.zhubaojie.com
+ * 7-1-2015
+ **/
+
+#zbj_talking {
+  position:fixed;
+  right:200px;
+  bottom:0;
+  width: 140px;
+  height: 33px;
+  background:#fff;
+  border: 1px solid #f69;
+  box-shadow:0 -2px 2px #e5e5e5;
+  cursor: pointer;
+  z-index: 11001;
+}
+#zbj_talking .zbj_chat_bd {
+  width: 138px;
+  height: 31px;
+  position: relative;
+}
+#zbj_talking .icon_talking {
+  display: block;
+  width: 18px;
+  height: 18px;
+  background:url(/catalog/view/theme/zbj/image/doota_im1.gif);
+  background-repeat:no-repeat;
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  font-size: 0;
+}
+
+ #zbj_talking .zbj_newChat{
+  display: block;
+  width: 111px;
+  height: 31px;
+  line-height: 31px;
+  font-size: 12px;
+  position: absolute;
+  top: 0;
+  left: 27px;
+  overflow: hidden;
+  padding-left:20px;
+}
+ #zbj_talking .zbj_newChat:hover{
+  color:#f69;
+ }
+    .chat-box{width:570px;height:422px;position:fixed;right:41px;bottom:100px;background:#fff;display:none;z-index:11001;}
+
+    .chat_content_head {
+      position:relative;
+      height: 32px;
+      background:#f69;
+      padding-left:6px;
+      cursor:move;
+    }
+    .chat-user-title{
+      height:32px;
+      width:147px;
+      float:left;
+      line-height:22px;
+      position:relative;
+    }
+    .chat-user-title .user_img {
+      width: 46px;
+      height: 46px;
+      display:block;
+      border: 1px solid #f69;
+      padding: 2px;
+      position:absolute;
+      top:-20px;
+      background:#fff;
+    }
+    .chat-user-title .user_img img {
+      width: 100%;
+    }
+    .chat-user-name{
+        font-size: 14px;
+        line-height: 32px;
+        vertical-align: top;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: inline-block;
+        width:200px;
+        margin-left:60px;
+    }
+    .chat-user-name a{color: #fff;text-decoration:none;}
+    .chat-header-min{position:absolute;top:-1px;right:-1px;height:24px;}
+    .chat-header-min a{
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      line-height:32px;
+      text-align:center;
+      color:#fff;
+      cursor:pointer;
+      overflow: hidden;
+      
+    }
+
+    .chat_content_body{
+      height:390px;
+      border:1px solid #f69;
+      border-top:none;
+    }
+
+    .gray { 
+      -webkit-filter: grayscale(100%); 
+      -moz-filter: grayscale(100%); 
+      -ms-filter: grayscale(100%); 
+      -o-filter: grayscale(100%); 
+      filter: grayscale(100%); 
+      filter: gray; 
+      }
+
+    .chat-box .chat-user-list{
+      width:148px;
+      height:100%;
+      float:left;
+      position:relative;
+      overflow:hidden;
+      background: #f7f7f7;
+      border-right: 1px solid #e7e7e7;
+    }
+     .chat-box ul{
+      padding:0px;
+     }
+  .chat-box .chat-user-list ul li {
+      width: 100%;
+      height: 34px;
+      padding: 0px 11px 0px 35px;
+      border-top:1px solid #f7f7f7;
+      border-bottom:1px solid #f7f7f7;
+      position: relative;
+      cursor: pointer;
+      }
+    .chat-box .chat-user-list ul li.active{
+      background:#fff;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      cursor: auto;
+    }
+    .chat-user-list ul li .avatar {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 7px;
+      left: 8px;
+      }
+      .zbj_nickname {
+      height: 34px;
+      line-height: 34px;
+      overflow: hidden;
+      width: 80px;
+      font-size:12px;
+      }
+      .chat-user-list ul li .btn_con {
+      display: block;
+      height: 16px;
+      position: absolute;
+      top: 9px;
+      right:12px;
+      display:none;
+      cursor:pointer;
+    }
+
+    .chat-user-list ul li .btn_con .del{
+      color:#f69;
+    }
+
+    .mnkf_dialog {
+      float: left;
+      width: 419px;
+      height: 100%;
+      background:#fff;
+    }
+    .mnkf_dialog_content {
+      height: 224px;
+      font-size: 12px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+    }
+    .chat-message{padding:3px 2px 7px;}
+    .mnkf_dialog_receive{margin: 7px 10px 0;}
+    .mnkf_dialog_receive p.other_name,.mnkf_dialog_send p.my_name{line-height:22px;font-weight:bold;}
+    .mnkf_dialog_receive .msgbox,.mnkf_dialog_send .msgbox {
+      display: inline-block;
+      max-width: 218px;
+      background: #f3f3f3;
+        border: 1px solid #e0e0e0;
+      word-wrap: break-word;
+      word-break: break-all;
+      _width: expression(this.offsetWidth > 218 ? '218px' : 'auto');
+      text-align: left;
+      line-height: 14px;
+      padding: 5px 10px 5px;
+      border-radius: 5px;
+      position: relative;
+    }
+    
+    .dialog_arrow {
+      display: block;
+      width: 7px;
+      height: 11px;
+      position: absolute;
+      bottom: 6px;
+      overflow: hidden;
+      background-image: url(/catalog/view/theme/zbj/image/chat_icons.png);
+        background-repeat: no-repeat;
+      }
+      .mnkf_dialog_receive .dialog_arrow{
+      left: -7px;
+      background-position: -40px -38px;
+    }
+    .mnkf_dialog_send {
+      text-align: right;
+      margin: 7px 10px 0;
+    }
+    .mnkf_dialog_send .msgbox {
+      background: #ecfbe1;
+      border: 1px solid #e1f0d6;
+    }
+    .mnkf_dialog_send .dialog_arrow {
+      right: -7px;
+      background-position: -47px -38px;
+    }
+    .mnkf_dialog_operating{
+        height: 25px;
+        background: #f3f3f3;
+        border-bottom: 1px solid #e2e2e2;
+        font-size: 12px;
+    }
+    .mnkf_dialog_ibox {
+      height: 92px;
+      border-top: 1px solid #ececec;
+      overflow: hidden;
+    }
+    .mnkf_dialog_ibox textarea {
+      width: 100%;
+      height: 80px;
+      line-height: 16px;
+      font-size: 12px;
+      background: #ffffff;
+      border: none;
+      resize: none;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 2px 8px;
+      outline: none;
+    }
+    .mnkf_dialog_foot {
+      font-size: 12px;
+      position: relative;
+      border-top:1px dotted #e5e5e5;
+    }
+    .mnkf_dialog_foot p {
+      line-height: 29px;
+      text-indent: 10px;
+      color: #666666;
+    }
+    .mnkf_send {
+      width: 120px;
+      height: 31px;
+      position: absolute;
+      top: 8px;
+      right: 0;
+    }
+    .mnkf_send .s_btn {
+      /*width: 51px;
+      color: white;
+      line-height: 29px;
+      text-align: center;
+      float: left;
+      height: 29px;
+      background-position: 0 -90px;
+      border: 1px solid #4ec000;
+      background-image: url(/catalog/view/theme/zbj/image/chat_bg_rx.png);
+        background-repeat: repeat-x;*/
+      width: 80px;
+      height: 32px;
+      line-height: 32px;
+      float: left;
+      background: #f69;
+      text-align: center;
+      color: #fff;
+      border-radius: 5px 0 0 5px;
+    }
+
+    .mnkf_send .st_arrow {
+      /*width: 15px;
+      border-left: none;
+      height: 29px;
+      overflow: hidden;
+      float: left;
+      background-position: 0 -90px;
+      border: 1px solid #4ec000;
+      background-image: url(/catalog/view/theme/zbj/image/chat_bg_rx.png);
+        background-repeat: repeat-x;
+        margin-left:-1px;*/
+      width:20px;
+      height:32px;
+      background:#f69;
+      overflow:hidden;
+      float:left;
+      border-left:1px dotted #fff;
+      border-radius: 0 5px 5px 0;
+
+    }
+    .mnkf_send .st_arrow em {
+      display: block;
+      width: 7px;
+      height: 4px;
+      margin: 14px auto 0;
+      background-position: -20px -30px;
+      font-size: 0;
+      background-image: url(/catalog/view/theme/zbj/image/chat_icons.png);
+        background-repeat:no-repeat;
+    }
+    #send_btn_choose {
+      width: 150px;
+      background: #ffffff;
+      border: 1px solid #d3d3d3;
+      position: absolute;
+      right: 0;
+      bottom: -18px;
+    }
+
+    #send_btn_choose li {
+      padding: 0 0 0 20px;
+      background-color: #f2f2f2;
+    }
+    #send_btn_choose li.curr {
+      background: #f2f2f2 url(/catalog/view/theme/zbj/image/chat_keycode_selected.png) no-repeat 5px 3px;
+    }
+    #send_btn_choose li a {
+      display: block;
+      height: 20px;
+      line-height: 20px;
+      color: #454545;
+      text-decoration: none;
+      padding: 0 0 0 9px;
+      background: #ffffff;
+      border-left: 1px solid #d3d3d3;
+      overflow: hidden;
+    }

@@ -1,0 +1,147 @@
+@charset "utf-8";
+/**
+ *珠宝街招商页面样式
+ * @wuyj
+ * www.zhubaojie.com
+ * 6-27-2015
+ **/
+.setted_content{width:1200px;margin-left:auto;margin-right:auto;}
+.banners{position:relative;}
+#special-sider {
+	width:100%;
+	height:320px;
+	position:relative;
+}
+#special-sider a{
+	display:block;
+	width:100%;
+	min-width:960px;
+	height:320px;
+	position:absolute;
+	top:0;left:0;
+	overflow:hidden;
+	display: none;
+}
+
+.banners .banners-nav{
+	position:absolute;left:50%;bottom:20px;margin-left:-50px;
+}
+
+.banners .banners-nav ul li{
+	float: left;
+	width: 10px;height: 10px;
+	margin-right: 10px;
+	background-color: #6f6d6e;
+	-webkit-border-radius: 50%;
+	border-radius: 50%;
+	cursor:pointer;
+}
+.banners .banners-nav ul li.current{
+	background-color:#f8397c;
+}
+
+.auction_tab{
+  border:1px solid #eee;
+  height:40px;
+  background-color:#f5f5f5;
+  margin-top:20px;
+}
+.auction_tab ul li{
+  float:left;
+  height:40px;
+  border-right:1px solid #eee;
+}
+.auction_tab ul li.curr{
+  background:#fff;
+}
+.auction_tab ul li a{
+  display:block;
+  position:relative;
+  height:40px;
+  padding:0 20px;
+  line-height:40px;
+  text-align:center;
+}
+.auction_tab ul li a .icon{
+  position:absolute;
+  right:5px;
+  top:15px;
+}
+.auction_tab ul li a:hover .icon{
+  color:#666;
+}
+
+
+.auction_sell_list{
+  margin:20px 0;
+}
+
+.auction_sell_list .products_list ul li{
+  float:left;
+  width:230px;
+  margin-right:10px;
+  margin-bottom:10px;
+  font-family: Tahoma,Arial,Helvetica,sans-serif;
+  border: 1px solid #e5e5e5;
+  background: #f5f5f5;
+}
+.auction_sell_list .products_list ul li:hover{
+  border:1px solid #f69;
+}
+.auction_sell_list .products_list ul li .image a{
+  display:block;
+  overflow:hidden;
+  text-align:center;
+}
+.auction_sell_list .products_list ul li .image img{
+  width:230px;
+  height:230px;
+  border:none;
+}
+.auction_sell_list .products_list ul li .a_info{
+  padding:10px;
+}
+.auction_sell_list .products_list ul li .a_info .a_left{
+  width:158px;
+  float:left;
+}
+.auction_sell_list .products_list ul li .a_info .a_left .a_name a{
+  display:block;height:25px;line-height:25px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis
+}
+.auction_sell_list .products_list ul li .a_info .a_left .a_name a:hover{
+  text-decoration:underline;
+}
+.auction_sell_list .products_list ul li .a_info .a_right{
+  width:50px;
+  float:right;
+}
+
+.curr_price span{
+  color: #fd3e7d;
+  font-size: 18px;
+  font-weight: 700;
+  margin-left:5px;
+}
+
+.a_time{
+  margin:5px 0;
+}
+.a_time span{
+  margin-left:5px;
+}
+.auction_sell_list .products_list ul li .a_info .a_right .auction_num{
+  display:block;
+  width:50px;
+  height:56px;
+  background:#fd3e7d;
+  color:#fff;
+  text-align:center;
+  margin-top:5px;
+}
+.auction_sell_list .products_list ul li .a_info .a_right .auction_num strong{
+    padding-top: 10px;
+  padding-bottom: 5px;
+  display: inline-block;
+}
+

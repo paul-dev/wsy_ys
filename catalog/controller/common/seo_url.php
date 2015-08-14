@@ -15,7 +15,7 @@ class ControllerCommonSeoUrl extends Controller {
 				array_pop($parts);
 			}
 
-            if (count($parts) == 2) {
+            /*if (count($parts) == 2) {
                 $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias WHERE keyword = '" . $this->db->escape($parts[1]) . "'");
 
                 if ($query->num_rows) {
@@ -55,7 +55,7 @@ class ControllerCommonSeoUrl extends Controller {
                 } elseif (isset($this->request->get['information_id'])) {
                     $this->request->get['route'] = 'information/information';
                 }
-            }
+            }*/
 
 			/*foreach ($parts as $part) {
 				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias WHERE keyword = '" . $this->db->escape($part) . "'");
@@ -145,7 +145,7 @@ class ControllerCommonSeoUrl extends Controller {
 
 		parse_str($url_info['query'], $data);
 
-		foreach ($data as $key => $value) {
+		/*foreach ($data as $key => $value) {
 			if (isset($data['route'])) {
 				if (($data['route'] == 'product/product' && $key == 'product_id') || (($data['route'] == 'product/manufacturer/info' || $data['route'] == 'product/product') && $key == 'manufacturer_id') || ($data['route'] == 'information/information' && $key == 'information_id')) {
 					$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias WHERE `query` = '" . $this->db->escape($key . '=' . (int)$value) . "'");
@@ -172,7 +172,7 @@ class ControllerCommonSeoUrl extends Controller {
 					}
 				}
 			}
-		}
+		}*/
 
         if (!$url && isset($data['route'])) {
             $url = '/' . $data['route'];

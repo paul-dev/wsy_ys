@@ -52,9 +52,20 @@
 </div>
 <?php echo $payment; ?>
 <script type="text/javascript"><!--
+    var _shippingTypeVal = $('select[name="shipping_type"]').val();
+    var _shippingType = $('select[name="shipping_type"]').find('option:selected').text();
     var _shippingAddress = $('select[name="address_id"]').find('option:selected').text();
     $('#collapse-shipping-address .panel-body').empty();
-    $('#collapse-shipping-address .panel-body').append('<span>'+_shippingAddress+'</span>');
+    $('#collapse-shipping-address .panel-body').append('<p><strong>配送类型：</strong></p>');
+    $('#collapse-shipping-address .panel-body').append('<p>'+_shippingType+'</p>');
+    $('#collapse-shipping-address .panel-body').append('<p><strong>配送地址：</strong></p>');
+    $('#collapse-shipping-address .panel-body').append('<p>'+_shippingAddress+'</p>');
+
+    if (_shippingTypeVal == '2') {
+        var _method = $('#collapse-shipping-method input[type=\'radio\']:checked').parent('label').text();
+        $('#collapse-shipping-method .panel-body').empty();
+        $('#collapse-shipping-method .panel-body').append('<p>'+_method+'</p>');
+    }
 
     $('select[name^="shipping_method_"]').each(function(){
         var _shopId = $(this).data('shop');

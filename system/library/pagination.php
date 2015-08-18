@@ -58,16 +58,16 @@ class Pagination {
 
 			for ($i = $start; $i <= $end; $i++) {
 				if ($page == $i) {
-					$output .= '<li class="active"><span style="background-color: #ff8cb5; border-color: #ff8cb5;">' . $i . '</span></li>';
+					$output .= '<li class="active"><span style="background-color: #1E91CF; border-color: #1E91CF;">' . $i . '</span></li>';
 				} else {
-					$output .= '<li><a href="' . str_replace('{page}', $i, $this->url) . '" style="color: #ff8cb5;">' . $i . '</a></li>';
+					$output .= '<li><a href="' . str_replace('{page}', $i, $this->url) . '" style="color: #1E91CF;">' . $i . '</a></li>';
 				}
 			}
 		//}
 
 		if ($page < $num_pages) {
-			$output .= '<li><a href="' . str_replace('{page}', $page + 1, $this->url) . '" style="color: #ff8cb5;">' . $this->text_next . '</a></li>';
-			$output .= '<li><a href="' . str_replace('{page}', $num_pages, $this->url) . '" style="color: #ff8cb5;">' . $this->text_last . '</a></li>';
+			$output .= '<li><a href="' . str_replace('{page}', $page + 1, $this->url) . '" style="color: #1E91CF;">' . $this->text_next . '</a></li>';
+			$output .= '<li><a href="' . str_replace('{page}', $num_pages, $this->url) . '" style="color: #1E91CF;">' . $this->text_last . '</a></li>';
 		}
 
 		$output .= '</ul>';

@@ -4,9 +4,13 @@
     </div>
     <div>
         <select name="shipping_type" class="form-control">
-            <option value="1">档口直发</option>
-            <option value="2">平台代发</option>
-            <option value="3">自提</option>
+            <?php foreach($shipping_types as $code => $name) { ?>
+            <?php if ($code == $shipping_type['code']) { ?>
+            <option value="<?php echo $code; ?>" selected="selected"><?php echo $name; ?></option>
+            <?php } else { ?>
+            <option value="<?php echo $code; ?>"><?php echo $name; ?></option>
+            <?php } ?>
+            <?php } ?>
         </select>
     </div>
 

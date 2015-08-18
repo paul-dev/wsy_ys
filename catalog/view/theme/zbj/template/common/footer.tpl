@@ -561,7 +561,7 @@ function activeLiveChat(obj) {
                         <li><a href="http://user.qzone.qq.com/1063681188/"><span class="i_qzone"> </span>QQ空间</a></li>
                     </ul>
                 </div>
-        
+
                 <div class="footlist">
                     <h5>在线沟通</h5>
                     <ul class="list-unstyled">
@@ -577,9 +577,8 @@ function activeLiveChat(obj) {
                     </ul>
                 </div>
                 <div class="footlist">
-                    <h5>珠宝街微信服务号</h5>
                     <div class="twodim-code">
-                        <img width="115" height="115" alt="珠宝街服务号二维码" title="珠宝街微信服务号" src="/catalog/view/theme/zbj/image/wx.jpg">
+                        <img width="115" height="115" alt="服务号二维码" title="微信服务号" src="/catalog/view/theme/zbj/image/wx.jpg">
                     </div>
                 </div>
         </div>

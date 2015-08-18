@@ -75,6 +75,9 @@ class ControllerCheckoutShippingAddress extends Controller {
 			$data['shipping_address_custom_field'] = array();
 		}
 
+        $data['shipping_types'] = $this->session->data['shipping_types'];
+        $data['shipping_type'] = $this->session->data['shipping_type'];
+
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/checkout/shipping_address.tpl')) {
 			$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/checkout/shipping_address.tpl', $data));
 		} else {

@@ -207,6 +207,8 @@ class ControllerCheckoutCheckout extends Controller {
         unset($this->session->data['shipping_method']);
         unset($this->session->data['shipping_methods']);
 
+        unset($this->session->data['shipping_types']);
+
         // Set payment address as shipping address
         $this->session->data['payment_address'] = $this->session->data['shipping_address'];
         unset($this->session->data['payment_method']);
@@ -217,29 +219,174 @@ class ControllerCheckoutCheckout extends Controller {
 
         unset($this->session->data['coupons']);
 
+        $data['shipping_types'] = array();
+        $data['shipping_type'] = '';
+        if (count($cart_shops) > 1) {
+            $data['shipping_types'] = array(
+                '1' => '档口直发',
+                '2' => '平台代发',
+            );
+            $data['shipping_type'] = array(
+                'code' => '2',
+                'name' => '平台代发'
+            );
+        } else {
+            $data['shipping_types'] = array(
+                '1' => '档口直发',
+                '2' => '平台代发',
+            );
+            $data['shipping_type'] = array(
+                'code' => '1',
+                'name' => '档口直发'
+            );
+        }
+        $this->session->data['shipping_types'] = $data['shipping_types'];
+        $this->session->data['shipping_type'] = $data['shipping_type'];
+
         $data['shipping_methods'] = array();
         $data['shop_shipping_required'] = array();
         if (isset($this->session->data['shipping_address'])) {
             // Shipping Methods
-
-            $this->session->data['shipping_method'] = array(
-                'code'         => 'main.main',
-                'title'        => '运费合计',
-                'cost'         => 0.00,
-                'tax_class_id' => 0,
-                'text'         => $this->currency->format(0.00)
-            );
-
             $results = $this->model_extension_extension->getExtensions('shipping');
 
-            foreach ($cart_shops as $shop_id) {
-                $data['shop_shipping_required'][$shop_id] = $this->cart->hasShipping($shop_id);
-                $method_data = array();
+            if ($this->session->data['shipping_type']['code'] == '1') {
+                $this->session->data['shipping_method'] = array(
+                    'code'         => 'main.main',
+                    'title'        => '运费合计',
+                    'cost'         => 0.00,
+                    'tax_class_id' => 0,
+                    'text'         => $this->currency->format(0.00)
+                );
+
+                foreach ($cart_shops as $shop_id) {
+                    $data['shop_shipping_required'][$shop_id] = $this->cart->hasShipping($shop_id);
+                    $method_data = array();
+                    foreach ($results as $result) {
+                        if ($this->config->get($result['code'] . '_status')) {
+                            $this->load->model('shipping/' . $result['code']);
+
+                            $quote = $this->{'model_shipping_' . $result['code']}->getQuote($this->session->data['shipping_address'], $shop_id);
+
+                            if ($quote) {
+                                $method_data[$result['code']] = array(
+                                    'title'      => $quote['title'],
+                                    'quote'      => $quote['quote'],
+                                    'sort_order' => $quote['sort_order'],
+                                    'error'      => $quote['error']
+                                );
+                            }
+                        }
+                    }
+
+                    $sort_order = array();
+
+                    foreach ($method_data as $key => $value) {
+                        $sort_order[$key] = $value['sort_order'];
+                    }
+
+                    array_multisort($sort_order, SORT_ASC, $method_data);
+
+                    if (empty($method_data)) {
+                        $method_data['none'] = array(
+                            'title'      => '无',
+                            'quote'      => array(
+                                'none' => array(
+                                    'code'         => 'none.none',
+                                    'title'        => '无',
+                                    'cost'         => 0.00,
+                                    'tax_class_id' => 0,
+                                    'text'         => $this->currency->format(0.00)
+                                )
+                            ),
+                            'sort_order' => 1,
+                            'error'      => false
+                        );
+                    }
+
+                    $data['shipping_methods'][$shop_id] = $method_data;
+                    $this->session->data['shop_shipping_methods'][$shop_id] = $method_data;
+                    if ($method_data) {
+                        switch ($data['shipping_type']['code']) {
+                            case '2':
+                                $default = array(
+                                    'title'      => '平台代发',
+                                    'quote'      => array(
+                                        'none' => array(
+                                            'code'         => 'sys.agent',
+                                            'title'        => '平台代发',
+                                            'cost'         => 0.00,
+                                            'tax_class_id' => 0,
+                                            'text'         => $this->currency->format(0.00)
+                                        )
+                                    ),
+                                    'sort_order' => 1,
+                                    'error'      => false
+                                );
+                                break;
+                            case '3':
+                                $default = array(
+                                    'title'      => '自提',
+                                    'quote'      => array(
+                                        'none' => array(
+                                            'code'         => 'self.self',
+                                            'title'        => '自提',
+                                            'cost'         => 0.00,
+                                            'tax_class_id' => 0,
+                                            'text'         => $this->currency->format(0.00)
+                                        )
+                                    ),
+                                    'sort_order' => 1,
+                                    'error'      => false
+                                );
+                                break;
+                            default :
+                                $default = array_shift($method_data);
+                                break;
+                        }
+
+                        if ($default) {
+                            $method = array_shift($default['quote']);
+                            $this->session->data['shop_shipping_method'][$shop_id] = $method;
+                            $this->session->data['shipping_method']['cost'] += $method['cost'];
+                            $this->session->data['shipping_method']['text'] = $this->currency->format($this->session->data['shipping_method']['cost']);
+                        }
+                    }
+                }
+            } else {
+                foreach ($cart_shops as $shop_id => $val) {
+                    $method_data = array();
+                    $method_data['sys'] = array(
+                        'title'      => '平台代发',
+                        'quote'      => array(
+                            'none' => array(
+                                'code'         => 'sys.agent',
+                                'title'        => '平台代发',
+                                'cost'         => 0.00,
+                                'tax_class_id' => 0,
+                                'text'         => $this->currency->format(0.00)
+                            )
+                        ),
+                        'sort_order' => 1,
+                        'error'      => false
+                    );
+                    $data['shipping_methods'][$shop_id] = $method_data;
+                    $this->session->data['shop_shipping_methods'][$shop_id] = $method_data;
+                    if ($method_data) {
+                        $default = array_shift($method_data);
+                        if ($default) {
+                            $method = array_shift($default['quote']);
+                            $this->session->data['shop_shipping_method'][$shop_id] = $method;
+                            //$this->session->data['shipping_method']['cost'] += $method['cost'];
+                            //$this->session->data['shipping_method']['text'] = $this->currency->format($this->session->data['shipping_method']['cost']);
+                        }
+                    }
+                }
+
                 foreach ($results as $result) {
                     if ($this->config->get($result['code'] . '_status')) {
                         $this->load->model('shipping/' . $result['code']);
 
-                        $quote = $this->{'model_shipping_' . $result['code']}->getQuote($this->session->data['shipping_address'], $shop_id);
+                        $quote = $this->{'model_shipping_' . $result['code']}->getQuote($this->session->data['shipping_address']);
 
                         if ($quote) {
                             $method_data[$result['code']] = array(
@@ -259,33 +406,12 @@ class ControllerCheckoutCheckout extends Controller {
                 }
 
                 array_multisort($sort_order, SORT_ASC, $method_data);
-
-                if (empty($method_data)) {
-                    $method_data['none'] = array(
-                        'title'      => '无',
-                        'quote'      => array(
-                            'none' => array(
-                                'code'         => 'none.none',
-                                'title'        => '无',
-                                'cost'         => 0.00,
-                                'tax_class_id' => 0,
-                                'text'         => $this->currency->format(0.00)
-                            )
-                        ),
-                        'sort_order' => 1,
-                        'error'      => false
-                    );
-                }
-
-                $data['shipping_methods'][$shop_id] = $method_data;
-                $this->session->data['shop_shipping_methods'][$shop_id] = $method_data;
-                if ($method_data) {
+                $this->session->data['shipping_methods'][0] = $method_data;
+                if ($this->cart->hasShipping() && $method_data) {
                     $default = array_shift($method_data);
                     if ($default) {
                         $method = array_shift($default['quote']);
-                        $this->session->data['shop_shipping_method'][$shop_id] = $method;
-                        $this->session->data['shipping_method']['cost'] += $method['cost'];
-                        $this->session->data['shipping_method']['text'] = $this->currency->format($this->session->data['shipping_method']['cost']);
+                        $this->session->data['shipping_method'] = $method;
                     }
                 }
             }
@@ -502,53 +628,84 @@ class ControllerCheckoutCheckout extends Controller {
         $data['shipping_methods'] = array();
         if (isset($this->session->data['shipping_address'])) {
             // Shipping Methods
-
-            $this->session->data['shipping_method'] = array(
-                'code'         => 'main.main',
-                'title'        => '运费合计',
-                'cost'         => 0.00,
-                'tax_class_id' => 0,
-                'text'         => $this->currency->format(0.00)
-            );
-
             $cart_shops = $this->cart->getShopSubTotal();
 
-            $results = $this->model_extension_extension->getExtensions('shipping');
+            if ($this->session->data['shipping_type']['code'] == '1') {
+                $this->session->data['shipping_method'] = array(
+                    'code'         => 'main.main',
+                    'title'        => '运费合计',
+                    'cost'         => 0.00,
+                    'tax_class_id' => 0,
+                    'text'         => $this->currency->format(0.00)
+                );
 
-            foreach ($cart_shops as $shop_id => $val) {
-                $method_data = array();
-                foreach ($results as $result) {
-                    if ($this->config->get($result['code'] . '_status')) {
-                        $this->load->model('shipping/' . $result['code']);
+                $results = $this->model_extension_extension->getExtensions('shipping');
 
-                        $quote = $this->{'model_shipping_' . $result['code']}->getQuote($this->session->data['shipping_address'], $shop_id);
+                foreach ($cart_shops as $shop_id => $val) {
+                    $method_data = array();
+                    foreach ($results as $result) {
+                        if ($this->config->get($result['code'] . '_status')) {
+                            $this->load->model('shipping/' . $result['code']);
 
-                        if ($quote) {
-                            $method_data[$result['code']] = array(
-                                'title'      => $quote['title'],
-                                'quote'      => $quote['quote'],
-                                'sort_order' => $quote['sort_order'],
-                                'error'      => $quote['error']
-                            );
+                            $quote = $this->{'model_shipping_' . $result['code']}->getQuote($this->session->data['shipping_address'], $shop_id);
+
+                            if ($quote) {
+                                $method_data[$result['code']] = array(
+                                    'title'      => $quote['title'],
+                                    'quote'      => $quote['quote'],
+                                    'sort_order' => $quote['sort_order'],
+                                    'error'      => $quote['error']
+                                );
+                            }
+                        }
+                    }
+
+                    $sort_order = array();
+
+                    foreach ($method_data as $key => $value) {
+                        $sort_order[$key] = $value['sort_order'];
+                    }
+
+                    array_multisort($sort_order, SORT_ASC, $method_data);
+
+                    if (empty($method_data)) {
+                        $method_data['none'] = array(
+                            'title'      => '无',
+                            'quote'      => array(
+                                'none' => array(
+                                    'code'         => 'none.none',
+                                    'title'        => '无',
+                                    'cost'         => 0.00,
+                                    'tax_class_id' => 0,
+                                    'text'         => $this->currency->format(0.00)
+                                )
+                            ),
+                            'sort_order' => 1,
+                            'error'      => false
+                        );
+                    }
+
+                    $data['shipping_methods'][$shop_id] = $method_data;
+                    $this->session->data['shop_shipping_methods'][$shop_id] = $method_data;
+                    if ($method_data) {
+                        $default = array_shift($method_data);
+                        if ($default) {
+                            $method = array_shift($default['quote']);
+                            $this->session->data['shop_shipping_method'][$shop_id] = $method;
+                            $this->session->data['shipping_method']['cost'] += $method['cost'];
+                            $this->session->data['shipping_method']['text'] = $this->currency->format($this->session->data['shipping_method']['cost']);
                         }
                     }
                 }
-
-                $sort_order = array();
-
-                foreach ($method_data as $key => $value) {
-                    $sort_order[$key] = $value['sort_order'];
-                }
-
-                array_multisort($sort_order, SORT_ASC, $method_data);
-
-                if (empty($method_data)) {
-                    $method_data['none'] = array(
-                        'title'      => '无',
+            } else {
+                foreach ($cart_shops as $shop_id => $val) {
+                    $method_data = array();
+                    $method_data['sys'] = array(
+                        'title'      => '平台代发',
                         'quote'      => array(
                             'none' => array(
-                                'code'         => 'none.none',
-                                'title'        => '无',
+                                'code'         => 'sys.agent',
+                                'title'        => '平台代发',
                                 'cost'         => 0.00,
                                 'tax_class_id' => 0,
                                 'text'         => $this->currency->format(0.00)
@@ -557,17 +714,16 @@ class ControllerCheckoutCheckout extends Controller {
                         'sort_order' => 1,
                         'error'      => false
                     );
-                }
-
-                $data['shipping_methods'][$shop_id] = $method_data;
-                $this->session->data['shop_shipping_methods'][$shop_id] = $method_data;
-                if ($method_data) {
-                    $default = array_shift($method_data);
-                    if ($default) {
-                        $method = array_shift($default['quote']);
-                        $this->session->data['shop_shipping_method'][$shop_id] = $method;
-                        $this->session->data['shipping_method']['cost'] += $method['cost'];
-                        $this->session->data['shipping_method']['text'] = $this->currency->format($this->session->data['shipping_method']['cost']);
+                    $data['shipping_methods'][$shop_id] = $method_data;
+                    $this->session->data['shop_shipping_methods'][$shop_id] = $method_data;
+                    if ($method_data) {
+                        $default = array_shift($method_data);
+                        if ($default) {
+                            $method = array_shift($default['quote']);
+                            $this->session->data['shop_shipping_method'][$shop_id] = $method;
+                            //$this->session->data['shipping_method']['cost'] += $method['cost'];
+                            //$this->session->data['shipping_method']['text'] = $this->currency->format($this->session->data['shipping_method']['cost']);
+                        }
                     }
                 }
             }

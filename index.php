@@ -1,6 +1,6 @@
 <?php
 // Version
-define('VERSION', '1.1.4'); //Jul 7 2015
+define('VERSION', '1.0.1'); //Aug 18 2015
 
 // Configuration
 if (is_file('config.php')) {

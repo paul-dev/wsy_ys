@@ -6,35 +6,6 @@
 <?php echo $header_top; ?>
 
 <div class="setted_content">
-    <div class="special_service clearfix">
-        <ul>
-            <li>
-                <img src="catalog/view/theme/zbj/image/circular.png" alt="">
-                <h2 class="tit mt">最大珠宝街电商</h2>
-                <p class="mt">百万注册用户</p>
-            </li>
-            <li>
-                <img src="catalog/view/theme/zbj/image/circular.png" alt="">
-                <h2 class="tit mt">品质保证</h2>
-                <p class="mt">所有商品均有国检证书保证</p>
-            </li>
-            <li>
-                <img src="catalog/view/theme/zbj/image/circular.png" alt="">
-                <h2 class="tit mt">品牌真品防伪码</h2>
-                <p class="mt">支持品牌官网验真</p>
-            </li>
-            <li>
-                <img src="catalog/view/theme/zbj/image/circular.png" alt="">
-                <h2 class="tit mt">15天无忧退换货</h2>
-                <p class="mt">不满意请放心退货</p>
-            </li>
-            <li>
-                <img src="catalog/view/theme/zbj/image/circular.png" alt="">
-                <h2 class="tit mt">货到付款</h2>
-                <p class="mt">当面验货 满意签收</p>
-            </li>
-        </ul>
-    </div>
     <div class="cata_title cata-layout clearfix">
         <!-- <span class="control-span"><?php echo $text_limit; ?></span>
         <ul class="category">

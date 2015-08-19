@@ -1,4 +1,4 @@
-<!-- <div class="list-group">
+<div class="list-group">
   <?php foreach ($categories as $category) { ?>
   <?php if ($category['category_id'] == $category_id) { ?>
   <a href="<?php echo $category['href']; ?>" class="list-group-item active"><?php echo $category['name']; ?></a>
@@ -15,11 +15,11 @@
   <a href="<?php echo $category['href']; ?>" class="list-group-item"><?php echo $category['name']; ?></a>
   <?php } ?>
   <?php } ?>
-</div> -->
+</div>
 <?php
 $icons = array('nav_icon_one', 'nav_icon_two', 'nav_icon_three', 'nav_icon_four', 'nav_icon_five');
 ?>
-<div class="xbanner" >
+<div class="xbanner" style="display: none;">
   <div class="owl-lf left" style="position:static;">
     <ul>
         <?php foreach ($categories as $category) { ?>

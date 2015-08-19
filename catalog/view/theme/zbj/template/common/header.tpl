@@ -193,8 +193,8 @@
       <li><a href="<?php echo $link_on_going; ?>"><?php echo $text_on_going; ?></a></li>
       <li><a href="<?php echo $link_best_shop; ?>"><?php echo $text_best_shop; ?></a></li>
       <li><a href="<?php echo $link_auction; ?>"><?php echo $text_auction; ?></a></li>
-      <li><a href="<?php echo $link_custom_buy; ?>"><?php echo $text_custom_buy; ?></a></li>
-      <li><a href="<?php echo $link_community; ?>" target="_blank"><?php echo $text_community; ?></a></li>
+      <!--<li><a href="<?php echo $link_custom_buy; ?>"><?php echo $text_custom_buy; ?></a></li>
+      <li><a href="<?php echo $link_community; ?>" target="_blank"><?php echo $text_community; ?></a></li>-->
       <li><a href="<?php echo $link_benefits; ?>"><?php echo $text_benefits; ?></a></li>
     </ul>
   </div>

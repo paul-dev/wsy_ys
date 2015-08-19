@@ -3,7 +3,11 @@ class ControllerCheckoutShippingMethod extends Controller {
 	public function index() {
 		$this->load->language('checkout/checkout');
 
-        if (isset($this->request->post['shipping_type']) && in_array((int)$this->request->post['shipping_type'], array(1,2))) {
+        if (!(isset($this->session->data['shipping_types']) && isset($this->session->data['shipping_type']) && array_key_exists($this->session->data['shipping_type']['code'], $this->session->data['shipping_types']))) {
+            $data['error_warning'] = '配送类型异常！';
+        }
+
+        if (!isset($data['error_warning']) && isset($this->request->post['shipping_type']) && array_key_exists($this->request->post['shipping_type'], $this->session->data['shipping_types'])) {
             if ((int)$this->request->post['shipping_type'] == 1) {
                 $this->session->data['shipping_type'] = array(
                     'code' => '1',
@@ -17,7 +21,7 @@ class ControllerCheckoutShippingMethod extends Controller {
             }
         }
 
-		if (isset($this->session->data['shipping_address'])) {
+		if (!isset($data['error_warning']) && isset($this->session->data['shipping_address'])) {
 			// Shipping Methods
             $method_data = array();
 

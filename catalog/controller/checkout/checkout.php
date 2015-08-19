@@ -223,8 +223,7 @@ class ControllerCheckoutCheckout extends Controller {
         $data['shipping_type'] = '';
         if (count($cart_shops) > 1) {
             $data['shipping_types'] = array(
-                '1' => '档口直发',
-                '2' => '平台代发',
+                '2' => '平台代发'
             );
             $data['shipping_type'] = array(
                 'code' => '2',
@@ -354,6 +353,7 @@ class ControllerCheckoutCheckout extends Controller {
                 }
             } else {
                 foreach ($cart_shops as $shop_id => $val) {
+                    $data['shop_shipping_required'][$shop_id] = $this->cart->hasShipping($shop_id);
                     $method_data = array();
                     $method_data['sys'] = array(
                         'title'      => '平台代发',
@@ -703,7 +703,7 @@ class ControllerCheckoutCheckout extends Controller {
                     $method_data['sys'] = array(
                         'title'      => '平台代发',
                         'quote'      => array(
-                            'none' => array(
+                            'sys' => array(
                                 'code'         => 'sys.agent',
                                 'title'        => '平台代发',
                                 'cost'         => 0.00,

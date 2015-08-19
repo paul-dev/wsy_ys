@@ -178,7 +178,11 @@ class ControllerCheckoutConfirm extends Controller {
 				$order_data['shipping_address_format'] = $this->session->data['shipping_address']['address_format'];
 				$order_data['shipping_custom_field'] = (isset($this->session->data['shipping_address']['custom_field']) ? $this->session->data['shipping_address']['custom_field'] : array());
 
-				if (isset($this->session->data['shipping_method']['title'])) {
+                $order_data['shipping_type_code'] = $this->session->data['shipping_type']['code'];
+                $order_data['shipping_type_name'] = $this->session->data['shipping_type']['name'];
+
+
+                if (isset($this->session->data['shipping_method']['title'])) {
 					$order_data['shipping_method'] = $this->session->data['shipping_method']['title'];
 				} else {
 					$order_data['shipping_method'] = '';
@@ -206,6 +210,8 @@ class ControllerCheckoutConfirm extends Controller {
 				$order_data['shipping_custom_field'] = array();
 				$order_data['shipping_method'] = '';
 				$order_data['shipping_code'] = '';
+                $order_data['shipping_type_code'] = '';
+                $order_data['shipping_type_name'] = '';
 			}
 
 			$order_data['products'] = array();

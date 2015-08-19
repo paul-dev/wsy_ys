@@ -96,7 +96,7 @@
                             <span style="float: left;">给卖家留言：</span>
                             <input name="comment_<?php echo $shop_id; ?>" class="form-control" style="width: 85%;" />
                         </label>
-                        <label style="<?php if (!$shop_shipping_required[$shop_id]) echo 'display: none; '; ?>float: right; width: 25%;">
+                        <label style="<?php if (!$shop_shipping_required[$shop_id] || $shipping_type['code'] == '2') echo 'display: none; '; ?>float: right; width: 25%;">
                             <span style="float: left;">配送方式：</span>
                             <select name="shipping_method_<?php echo $shop_id; ?>" data-shop="<?php echo $shop_id; ?>" class="form-control" style="width: 78%;">
                                 <?php foreach ($shipping_methods[$shop_id] as $shipping_method) { ?>
@@ -191,6 +191,12 @@
                                     //$(this).trigger('change');
                                     var _totals = json['totals'];
                                     $('#shop_total_'+_shopId).html('<label style="float: right; width: 25%;">'+_totals[_shopId]+'</label>');
+
+                                    if (_shippingType == '1') {
+                                        $(this).parent('label').show();
+                                    } else {
+                                        $(this).parent('label').hide();
+                                    }
                                 });
 
                                 if ($('input[name="shipping_address"]:checked').val() == 'new') {
@@ -628,67 +634,98 @@ $(document).delegate('#button-shipping-address', 'click', function() {
                 $('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('<?php echo $text_checkout_confirm; ?>');
                 $('#collapse-checkout-confirm .panel-body').html('');
 
+                var _shippingType = $('select[name=\'shipping_type\']').val();
                 $.ajax({
-                    url: 'index.php?route=checkout/checkout/shipping',
-                    dataType: 'json',
-                    success: function(json) {
-                        $('select[name^="shipping_method_"]').each(function(){
-                            var _shopId = $(this).data('shop');
-                            $(this).empty();
-                            var _obj = $(this);
-                            var _methods = json['shipping_methods'];
-                            if (_methods[_shopId]) {
-                                $.each(_methods[_shopId], function(i){
-                                    $.each(_methods[_shopId][i]['quote'], function(k){
-                                        var _val = _methods[_shopId][i]['quote'][k];
-                                        _obj.append('<option value="'+_val['code']+'">'+_val['title']+' - '+_val['text']+'</option>');
-                                    });
-                                });
-                            }
+                    url: 'index.php?route=checkout/shipping_method',
+                    dataType: 'html',
+                    success: function(html) {
+                        $('#collapse-shipping-method .panel-body').html(html);
 
-                            if ($(this).find('option').length == 0) {
-                                $(this).append('<option value="none.none">无</option>');
-                            }
+                        //$('#collapse-shipping-method').parent().find('.panel-heading .panel-title').html('<a href="#collapse-shipping-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle"><?php echo $text_checkout_shipping_method; ?> <i class="fa fa-caret-down"></i></a>');
 
-                            if ($(this).val() == 'none.none') {
-                                $(this).hide();
-                                $(this).prev('span').hide();
-                                $(this).parent('label').append('<span class="alert alert-danger" style="float: right; margin-bottom: 0px;"><?php echo $error_shipping_method; ?></span>');
-                            } else {
-                                $(this).parent('label').find('.alert, .text-danger').remove();
-                                $(this).show();
-                                $(this).prev('span').show();
-                            }
+                        //$('a[href=\'#collapse-shipping-method\']').trigger('click');
 
-                            //$(this).trigger('change');
-                            var _totals = json['totals'];
-                            $('#shop_total_'+_shopId).html('<label style="float: right; width: 25%;">'+_totals[_shopId]+'</label>');
-                        });
-
-                        if ($('input[name="shipping_address"]:checked').val() == 'new') {
-                            $.ajax({
-                                url: 'index.php?route=checkout/shipping_address',
-                                dataType: 'html',
-                                success: function(html) {
-                                    $('#collapse-shipping-address .panel-body').html(html);
-                                },
-                                error: function(xhr, ajaxOptions, thrownError) {
-                                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                                }
-                            });
+                        if (_shippingType == '1') {
+                            $('#collapse-shipping-method').parent('.panel').hide();
+                        } else {
+                            $('#collapse-shipping-method').parent('.panel').show();
+                            $('#collapse-shipping-method').css('visibility', 'visible');
+                            $('#collapse-shipping-method').slideDown();
                         }
 
                         $.ajax({
-                            url: 'index.php?route=checkout/payment_method',
-                            dataType: 'html',
-                            success: function(html) {
-                                $('#collapse-payment-method .panel-body').html(html);
+                            url: 'index.php?route=checkout/checkout/shipping',
+                            dataType: 'json',
+                            success: function(json) {
+                                $('select[name^="shipping_method_"]').each(function(){
+                                    var _shopId = $(this).data('shop');
+                                    $(this).empty();
+                                    var _obj = $(this);
+                                    var _methods = json['shipping_methods'];
+                                    if (_methods[_shopId]) {
+                                        $.each(_methods[_shopId], function(i){
+                                            $.each(_methods[_shopId][i]['quote'], function(k){
+                                                var _val = _methods[_shopId][i]['quote'][k];
+                                                _obj.append('<option value="'+_val['code']+'">'+_val['title']+' - '+_val['text']+'</option>');
+                                            });
+                                        });
+                                    }
 
-                                $('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle"><?php echo $text_checkout_payment_method; ?> <i class="fa fa-caret-down"></i></a>');
+                                    if ($(this).find('option').length == 0) {
+                                        $(this).append('<option value="none.none">无</option>');
+                                    }
 
-                                if (!$('#collapse-payment-method').hasClass('in')) $('a[href=\'#collapse-payment-method\']').trigger('click');
+                                    if ($(this).val() == 'none.none') {
+                                        $(this).hide();
+                                        $(this).prev('span').hide();
+                                        $(this).parent('label').append('<span class="alert alert-danger" style="float: right; margin-bottom: 0px;"><?php echo $error_shipping_method; ?></span>');
+                                    } else {
+                                        $(this).parent('label').find('.alert, .text-danger').remove();
+                                        $(this).show();
+                                        $(this).prev('span').show();
+                                    }
 
-                                $('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('<?php echo $text_checkout_confirm; ?>');
+                                    //$(this).trigger('change');
+                                    var _totals = json['totals'];
+                                    $('#shop_total_'+_shopId).html('<label style="float: right; width: 25%;">'+_totals[_shopId]+'</label>');
+
+                                    if (_shippingType == '1') {
+                                        $(this).parent('label').show();
+                                    } else {
+                                        $(this).parent('label').hide();
+                                    }
+                                });
+
+                                if ($('input[name="shipping_address"]:checked').val() == 'new') {
+                                    $.ajax({
+                                        url: 'index.php?route=checkout/shipping_address',
+                                        dataType: 'html',
+                                        success: function(html) {
+                                            $('#collapse-shipping-address .panel-body').html(html);
+                                        },
+                                        error: function(xhr, ajaxOptions, thrownError) {
+                                            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                                        }
+                                    });
+                                }
+
+                                $.ajax({
+                                    url: 'index.php?route=checkout/payment_method',
+                                    dataType: 'html',
+                                    success: function(html) {
+                                        $('#collapse-payment-method .panel-body').html(html);
+
+                                        $('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle"><?php echo $text_checkout_payment_method; ?> <i class="fa fa-caret-down"></i></a>');
+
+                                        if (!$('#collapse-payment-method').hasClass('in')) $('a[href=\'#collapse-payment-method\']').trigger('click');
+
+                                        $('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('<?php echo $text_checkout_confirm; ?>');
+                                    },
+                                    error: function(xhr, ajaxOptions, thrownError) {
+                                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                                    }
+                                });
+
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

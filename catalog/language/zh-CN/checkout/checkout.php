@@ -26,7 +26,7 @@ $_['text_your_address']              = '地址';
 $_['text_your_password']             = '密码';
 $_['text_agree']                     = '已阅读并同意 <a href="%s" class="agree"><b>%s</b></a>';
 $_['text_address_new']               = '添加一个新地址';
-$_['text_address_existing']          = '使用现存地址';
+$_['text_address_existing']          = '使用现有地址';
 $_['text_shipping_method']           = '请选择配送方式。';
 $_['text_payment_method']            = '请选择支付方式。';
 $_['text_comments']                  = '备注';

@@ -159,7 +159,7 @@ class ModelCatalogProduct extends Model {
             switch ($data['filter_type']) {
                 case 'reward' :
                     //$sql .= " AND p2s.store_id = '" . (int)$data['filter_store_id'] . "' AND p.points > 0";
-                    $sql .= "' AND p.points > 0";
+                    $sql .= " AND p.points > 0";
                     break;
                 case 'shop' :
                     //$sql .= " AND p2s.store_id > 0";
@@ -721,7 +721,7 @@ class ModelCatalogProduct extends Model {
         if (!empty($data['filter_type'])) {
             switch ($data['filter_type']) {
                 case 'reward' :
-                    $sql .= "' AND p.points > 0";
+                    $sql .= " AND p.points > 0";
                     break;
                 case 'shop' :
                     //$sql .= " AND p2s.store_id > 0";

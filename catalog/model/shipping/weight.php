@@ -57,6 +57,35 @@ class ModelShippingWeight extends Model {
                     }
                 }
 
+                for ($i=1;$i<=20;$i++) {
+                    $code = 'custom'.$i;
+                    $firstWeight = isset($_settings['weight_' . $code . '_' . $result['geo_zone_id'] . '_first_weight']) ? $_settings['weight_' . $code . '_' . $result['geo_zone_id'] . '_first_weight'] : false;
+                    $firstPrice = isset($_settings['weight_' . $code . '_' . $result['geo_zone_id'] . '_first_price']) ? $_settings['weight_' . $code . '_' . $result['geo_zone_id'] . '_first_price'] : false;
+                    $nextWeight = isset($_settings['weight_' . $code . '_' . $result['geo_zone_id'] . '_next_weight']) ? $_settings['weight_' . $code . '_' . $result['geo_zone_id'] . '_next_weight'] : false;
+                    $nextPrice = isset($_settings['weight_' . $code . '_' . $result['geo_zone_id'] . '_next_price']) ? $_settings['weight_' . $code . '_' . $result['geo_zone_id'] . '_next_price'] : false;
+                    $customName = isset($_settings['weight_' . $code . '_' . $result['geo_zone_id'] . '_name']) ? $_settings['weight_' . $code . '_' . $result['geo_zone_id'] . '_name'] : false;
+
+                    if (!$customName || !$firstWeight || !$firstPrice || !$nextWeight || !$nextPrice) continue;
+
+                    $cost = false;
+                    if ($firstWeight >= $weight) {
+                        $cost = $firstPrice;
+                    } else {
+                        $weight_add = $weight - $firstWeight;
+                        $cost = $firstPrice + (ceil($weight_add / $nextWeight) * $nextPrice);
+                    }
+
+                    if ($cost !== false) {
+                        $quote_data['weight_' . $code . '_' . $result['geo_zone_id']] = array(
+                            'code'         => 'weight.weight_' . $code . '_' . $result['geo_zone_id'],
+                            'title'        => $customName . '  (' . $this->language->get('text_weight') . ' ' . $this->weight->format($weight, $this->config->get('config_weight_class_id')) . ')',
+                            'cost'         => $cost,
+                            'tax_class_id' => $_settings['weight_tax_class_id'],
+                            'text'         => $this->currency->format($this->tax->calculate($cost, $_settings['weight_tax_class_id'], $this->config->get('config_tax')))
+                        );
+                    }
+                }
+
 				/*$rates = explode(',', $this->config->get('weight_' . $result['geo_zone_id'] . '_rate'));
 
 				foreach ($rates as $rate) {

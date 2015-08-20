@@ -76,6 +76,8 @@ class ControllerAccountOrder extends Controller {
 
 		$data['orders'] = array();
 
+        $parent_order = array();
+
 		$this->load->model('account/order');
         $this->load->model('tool/upload');
 
@@ -87,7 +89,45 @@ class ControllerAccountOrder extends Controller {
 		$results = $this->model_account_order->getOrders(($page - 1) * 10, 10);
 
 		foreach ($results as $result) {
-			$product_total = $this->model_account_order->getTotalOrderProductsByOrderId($result['order_id']);
+            if ($result['parent_id'] && !array_key_exists($result['parent_id'], $parent_order)) {
+                $_order = $this->model_account_order->getOrder($result['parent_id']);
+                $_action = array();
+                switch ($result['order_status_id']) {
+                    case 1 :
+                        if (!empty($_order['payment_url'])) {
+                            $_action[] = array(
+                                'name' => '去付款',
+                                'href' => $_order['payment_url'],
+                                'target' => '_blank'
+                            );
+                        }
+                        $_action[] = array(
+                            'name' => $this->language->get('action_cancel'),
+                            'confirm' => $this->language->get('text_confirm_cancel'),
+                            'href' => $this->url->link('account/order/cancel', 'order_id=' . $_order['order_id'], 'SSL')
+                        );
+                        break;
+                    case 3 :
+                        $_action[] = array(
+                            'name' => $this->language->get('action_confirm'),
+                            'confirm' => $this->language->get('text_confirm_confirm'),
+                            'href' => $this->url->link('account/order/confirm', 'order_id=' . $_order['order_id'], 'SSL')
+                        );
+                        break;
+                }
+                $parent_order[$result['parent_id']] = array(
+                    'order_id'   => $_order['order_id'],
+                    'shipping_type_code' => $_order['shipping_type_code'],
+                    'shipping_type_name' => $_order['shipping_type_name'],
+                    'date_added' => date($this->language->get('datetime_format'), strtotime($_order['date_added'])),
+                    'products_amount'   => $this->model_account_order->getTotalOrderProductsByOrderId($_order['order_id']),
+                    'total'      => $this->currency->format($_order['total'], $_order['currency_code'], $_order['currency_value']),
+                    'href'       => $this->url->link('account/order/info', 'order_id=' . $_order['order_id'], 'SSL'),
+                    'action'     => $_action
+                );
+            }
+
+            $product_total = $this->model_account_order->getTotalOrderProductsByOrderId($result['order_id']);
 			$voucher_total = $this->model_account_order->getTotalOrderVouchersByOrderId($result['order_id']);
 
             $order_products = array();
@@ -126,7 +166,7 @@ class ControllerAccountOrder extends Controller {
                 $actions = array();
                 $actions[] = array(
                     'name' => $this->language->get('button_view'),
-                    'href' => $this->url->link('account/order/info', 'order_id=' . $result['order_id'], 'SSL'),
+                    'href' => $this->url->link('account/order/info', 'order_id=' . ($parent_order[$result['parent_id']]['shipping_type_code'] == '2' ? $result['parent_id'] : $result['order_id']), 'SSL'),
                 );
 
                 if (in_array($result['order_status_id'], array(2,3,15)) && !$product['return_id']) {
@@ -206,6 +246,7 @@ class ControllerAccountOrder extends Controller {
 			$data['orders'][] = array(
 				'order_id'   => $result['order_id'],
                 'parent_id'  => $result['parent_id'],
+                'parent_order' => isset($parent_order[$result['parent_id']]) ? $parent_order[$result['parent_id']] : array(),
 				'name'       => $result['fullname'],
                 'shipping_name' => $result['shipping_fullname'],
 				'status'     => $result['status'],
@@ -214,8 +255,8 @@ class ControllerAccountOrder extends Controller {
                 'products'   => $order_products,
                 'products_amount'   => ($product_total + $voucher_total),
 				'total'      => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
-				'href'       => $this->url->link('account/order/info', 'order_id=' . $result['order_id'], 'SSL'),
-                'action'     => $order_action
+				'href'       => $this->url->link('account/order/info', 'order_id=' . ($parent_order[$result['parent_id']]['shipping_type_code'] == '2' ? $result['parent_id'] : $result['order_id']), 'SSL'),
+                'action'     => array() //$order_action
 			);
 		}
 

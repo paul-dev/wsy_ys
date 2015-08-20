@@ -48,16 +48,49 @@
                 <?php
                     if ($order['parent_id'] <> $last_id) {
                         if ($last_id <> '0') echo '<tr><td colspan="7" style="border:none;height:12px;"></td></tr>';
+                        if (1 == 1 || $order['parent_order']['shipping_type_code'] == '2') {
+                ?>
+            <tr>
+                <td class="text-left" colspan="5" style="background-color: #EDEDF3;border-right:none">
+                    <strong>
+                        <?php if ($order['parent_order']['shipping_type_code'] == '2') { ?>
+                        #A<?php echo $order['parent_order']['order_id']; ?>,
+                        <?php } ?>
+                    <?php echo $order['parent_order']['shipping_type_name']; ?>,
+                    <?php echo $order['parent_order']['total']; ?>,
+                        <?php echo $order['parent_order']['date_added']; ?>
+                        <?php if ($order['parent_order']['shipping_type_code'] == '2') { ?>
+                        &nbsp;&nbsp;&nbsp;<a href="<?php echo $order['parent_order']['href']; ?>">查看订单</a>
+                        <?php } ?>
+                    </strong>
+                </td>
+                <td colspan="2" class="text-right" style="background-color: #EDEDF3;border-left:none;width:20%;">
+                    <?php if (!empty($order['parent_order']['action'])) { ?>
+                    <?php foreach($order['parent_order']['action'] as $action) { ?>
+                    <?php if (isset($action['confirm'])) { ?>
+                    <a href="javascript:void(0);" onclick="if (confirm('<?php echo $action['confirm']; ?>')) window.location.href = '<?php echo $action['href']; ?>';" class="btn btn-info" style="line-height: 5px;"><?php echo $action['name']; ?></a>
+                    <?php } else { ?>
+                    <a href="<?php echo $action['href']; ?>" class="btn btn-info" style="line-height: 5px;"<?php if (isset($action['target'])) echo ' target="'.$action['target'].'"'; ?>><?php echo $action['name']; ?></a>
+                    <?php } ?>
+                    <?php } ?>
+                    <?php } else { ?>
+                    &nbsp;
+                    <?php } ?>
+                </td>
+            </tr>
+                <?php
+                        }
                         $last_id = $order['parent_id'];
                     }
                 ?>
                 <tr>
-                    <td class="text-left" colspan="5" style="background-color: #e8e8e8;border-right:none">
-                        #<?php echo $order['order_id']; ?>,
+                    <td class="text-left" colspan="5" style="background-color: #f5f5f5;border-right:none">
+                        #S<?php echo $order['order_id']; ?>,
                         <a href="<?php echo $order['shop_info']['shop_url']; ?>" target="_blank"><?php echo $order['shop_info']['config_name']; ?></a>,
-                        <?php echo $order['date_added']; ?>
+                        <?php echo $order['total']; ?>
+                        <?php //echo $order['date_added']; ?>
                     </td>
-                    <td colspan="2" class="text-right" style="background-color: #e8e8e8;border-left:none">
+                    <td colspan="2" class="text-right" style="background-color: #f5f5f5;border-left:none">
                         <?php if (!empty($order['action'])) { ?>
                         <?php foreach($order['action'] as $action) { ?>
                             <?php if (isset($action['confirm'])) { ?>

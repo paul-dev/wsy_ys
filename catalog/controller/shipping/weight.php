@@ -25,7 +25,8 @@ class ControllerShippingWeight extends Controller {
 		$this->load->model('seller/setting');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-			$this->model_seller_setting->editSetting('weight', $this->request->post, $this->customer->getShopId());
+            $this->model_seller_setting->deleteSetting('weight', $this->customer->getShopId());
+            $this->model_seller_setting->editSetting('weight', $this->request->post, $this->customer->getShopId());
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -181,6 +182,45 @@ class ControllerShippingWeight extends Controller {
                 $data['weight_ems_' . $geo_zone['geo_zone_id'] . '_next_price'] = $_settings['weight_ems_' . $geo_zone['geo_zone_id'] . '_next_price'];
             } else {
                 $data['weight_ems_' . $geo_zone['geo_zone_id'] . '_next_price'] = '';
+            }
+
+            // Custom
+            for ($i=1;$i<=20;$i++) {
+                if (isset($this->request->post['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_name'])) {
+                    $data['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_name'] = $this->request->post['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_name'];
+                } else {
+                    if (isset($_settings['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_name'])) {
+                        $data['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_name'] = $_settings['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_name'];
+                    }
+                }
+                if (isset($this->request->post['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_weight'])) {
+                    $data['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_weight'] = $this->request->post['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_weight'];
+                } else {
+                    if (isset($_settings['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_weight'])) {
+                        $data['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_weight'] = $_settings['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_weight'];
+                    }
+                }
+                if (isset($this->request->post['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_price'])) {
+                    $data['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_price'] = $this->request->post['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_price'];
+                } else {
+                    if (isset($_settings['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_price'])) {
+                        $data['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_price'] = $_settings['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_price'];
+                    }
+                }
+                if (isset($this->request->post['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_weight'])) {
+                    $data['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_weight'] = $this->request->post['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_weight'];
+                } else {
+                    if (isset($_settings['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_weight'])) {
+                        $data['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_weight'] = $_settings['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_weight'];
+                    }
+                }
+                if (isset($this->request->post['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_price'])) {
+                    $data['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_price'] = $this->request->post['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_price'];
+                } else {
+                    if (isset($_settings['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_price'])) {
+                        $data['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_price'] = $_settings['weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_price'];
+                    }
+                }
             }
 
 			if (isset($this->request->post['weight_' . $geo_zone['geo_zone_id'] . '_status'])) {

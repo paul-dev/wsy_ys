@@ -107,6 +107,30 @@
                             <p style="float: left; width: 50%;"><span style="float: left;">价格：</span><input type="text" name="weight_ems_<?php echo $geo_zone['geo_zone_id']; ?>_next_price" value="<?php echo ${'weight_ems_' . $geo_zone['geo_zone_id'] . '_next_price'}; ?>" class="form-control" style="width: 85%;" /></p>
                         </div>
                     </div>
+
+                    <?php
+                    for ($i=1;$i<=20;$i++) {
+                    if (!isset(${'weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_name'})) continue;
+                    ?>
+                    <div class="form-group" data-rowid="<?php echo $i; ?>">
+                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px;"><button type="button" onclick="$(this).closest(\'.form-group\').remove();" data-toggle="tooltip" title="" class="btn btn-danger" style="float: left; margin-right: 3px;"><i class="fa fa-minus-circle"></i></button> <input type="text" placeholder="名称" name="weight_custom<?php echo $i.'_'.$geo_zone['geo_zone_id']; ?>_name" value="<?php echo ${'weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_name'}; ?>" class="form-control" style="width: 69%;" /></label>
+                        <div class="col-sm-10">
+                            <p style="float: left; width: 50%;"><span style="float: left;">首重：</span><input type="text" placeholder="kg" name="weight_custom<?php echo $i.'_'.$geo_zone['geo_zone_id']; ?>_first_weight" value="<?php echo ${'weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_weight'}; ?>" class="form-control" style="width: 85%;" /></p>
+                            <p style="float: left; width: 50%;"><span style="float: left;">价格：</span><input type="text" name="weight_custom<?php echo $i.'_'.$geo_zone['geo_zone_id']; ?>_first_price" value="<?php echo ${'weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_first_price'}; ?>" class="form-control" style="width: 85%;" /></p>
+                            <br/>
+                            <p style="float: left; width: 50%;"><span style="float: left;">续重：</span><input type="text" placeholder="kg" name="weight_custom<?php echo $i.'_'.$geo_zone['geo_zone_id']; ?>_next_weight" value="<?php echo ${'weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_weight'}; ?>" class="form-control" style="width: 85%;" /></p>
+                            <p style="float: left; width: 50%;"><span style="float: left;">价格：</span><input type="text" name="weight_custom<?php echo $i.'_'.$geo_zone['geo_zone_id']; ?>_next_price" value="<?php echo ${'weight_custom'.$i.'_' . $geo_zone['geo_zone_id'] . '_next_price'}; ?>" class="form-control" style="width: 85%;" /></p>
+                        </div>
+                    </div>
+                    <?php } ?>
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <p class="text-left" style="float: right;">
+                                <button type="button" onclick="addShipping('<?php echo $geo_zone['geo_zone_id']; ?>');" data-toggle="tooltip" title="" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button>
+                            </p>
+                        </div>
+                    </div>
                   <!--
                   <div class="form-group">
                     <label class="col-sm-2 control-label" for="input-rate<?php echo $geo_zone['geo_zone_id']; ?>"><span data-toggle="tooltip" title="<?php echo $help_rate; ?>"><?php echo $entry_rate; ?></span></label>
@@ -139,4 +163,29 @@
     </div>
   </div>
 </div>
+
+<script language="JavaScript">
+    function addShipping(gid) {
+        var _row = $('#tab-geo-zone'+gid).find('.form-group').length - 4;
+        if (_row > 5) {
+            alert('最多只能添加5个自定义配送方式！');
+            return false;
+        }
+        if (_row > 1) {
+            _row = $('#tab-geo-zone'+gid).find('.form-group').last().prev().prev().data('rowid') + 1;
+        }
+        var _html = '<div class="form-group" data-rowid="'+_row+'">';
+        _html += '<label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px;"><button type="button" onclick="$(this).closest(\'.form-group\').remove();" data-toggle="tooltip" title="" class="btn btn-danger" style="float: left; margin-right: 3px;"><i class="fa fa-minus-circle"></i></button> <input type="text" placeholder="名称" name="weight_custom'+_row+'_'+gid+'_name" value="" class="form-control" style="width: 69%;" /></label>';
+        _html += '<div class="col-sm-10">';
+        _html += '<p style="float: left; width: 50%;"><span style="float: left;">首重：</span><input type="text" placeholder="kg" name="weight_custom'+_row+'_'+gid+'_first_weight" value="" class="form-control" style="width: 85%;" /></p>';
+        _html += '<p style="float: left; width: 50%;"><span style="float: left;">价格：</span><input type="text" name="weight_custom'+_row+'_'+gid+'_first_price" value="" class="form-control" style="width: 85%;" /></p>';
+        _html += '<br/>';
+        _html += '<p style="float: left; width: 50%;"><span style="float: left;">续重：</span><input type="text" placeholder="kg" name="weight_custom'+_row+'_'+gid+'_next_weight" value="" class="form-control" style="width: 85%;" /></p>';
+        _html += '<p style="float: left; width: 50%;"><span style="float: left;">价格：</span><input type="text" name="weight_custom'+_row+'_'+gid+'_next_price" value="" class="form-control" style="width: 85%;" /></p>';
+        _html += '</div>';
+        _html += '</div>';
+
+        $('#tab-geo-zone'+gid).find('.form-group').last().prev().before(_html);
+    }
+</script>
 <?php echo $footer; ?> 

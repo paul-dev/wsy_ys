@@ -569,9 +569,9 @@
                         <table id="option-value<?php echo $option_row; ?>" class="table table-striped table-bordered table-hover">
                           <thead>
                             <tr>
-                              <td class="text-left"><?php echo $entry_option_value; ?></td>
+                              <td class="text-left" style="width: 15%;"><?php echo $entry_option_value; ?></td>
                               <td class="text-right"><?php echo $entry_quantity; ?></td>
-                              <td class="text-left"><?php echo $entry_subtract; ?></td>
+                              <td class="text-left" style="width: 15%;"><?php echo $entry_subtract; ?></td>
                               <td class="text-right"><?php echo $entry_price; ?></td>
                               <td class="text-right"><?php echo $entry_option_points; ?></td>
                               <td class="text-right"><?php echo $entry_weight; ?></td>

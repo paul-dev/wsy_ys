@@ -452,6 +452,7 @@ class ControllerCheckoutCheckout extends Controller {
 
         foreach ($total_data as $total) {
             if (!array_key_exists('shop_id', $total)) continue;
+            if ($this->session->data['shipping_type']['code'] == '2' && $total['code'] == 'shipping') continue;
             $data['totals'][$total['shop_id']][] = array(
                 'title' => $total['title'],
                 'text'  => $this->currency->format($total['value'])
@@ -765,6 +766,7 @@ class ControllerCheckoutCheckout extends Controller {
 
         foreach ($total_data as $total) {
             if (!array_key_exists('shop_id', $total)) continue;
+            if ($this->session->data['shipping_type']['code'] == '2' && $total['code'] == 'shipping') continue;
             if (!array_key_exists($total['shop_id'], $data['totals'])) $data['totals'][$total['shop_id']] = '';
             /*if (isset($this->request->get['shop_id'])) {
                 if ($total['shop_id'] <> $this->request->get['shop_id']) continue;

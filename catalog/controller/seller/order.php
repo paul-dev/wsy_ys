@@ -478,7 +478,9 @@ class ControllerSellerOrder extends Controller {
 				'total'         => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
 				'date_added'    => date($this->language->get('datetime_format'), strtotime($result['date_added'])),
 				'date_modified' => date($this->language->get('datetime_format'), strtotime($result['date_modified'])),
-				'shipping_code' => $result['shipping_code'],
+                'shipping_code' => $result['shipping_code'],
+                'shipping_type_code' => $result['shipping_type_code'],
+                'shipping_type_name' => $result['shipping_type_name'],
                 'products'      => $order_products,
 				'view'          => $this->url->link('seller/order/info', 'order_id=' . $result['order_id'] . $url, 'SSL'),
 				'edit'          => $this->url->link('seller/order/edit', 'order_id=' . $result['order_id'] . $url, 'SSL'),
@@ -1342,7 +1344,9 @@ class ControllerSellerOrder extends Controller {
 			}
 			
 			$data['comment'] = nl2br($order_info['comment']);
-			$data['shipping_method'] = $order_info['shipping_method'];
+            $data['shipping_type_code'] = $order_info['shipping_type_code'];
+            $data['shipping_type_name'] = $order_info['shipping_type_name'];
+            $data['shipping_method'] = $order_info['shipping_method'];
 			$data['payment_method'] = $order_info['payment_method'];
 			$data['total'] = $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value']);
 
@@ -1380,8 +1384,8 @@ class ControllerSellerOrder extends Controller {
 			$data['forwarded_ip'] = $order_info['forwarded_ip'];
 			$data['user_agent'] = $order_info['user_agent'];
 			$data['accept_language'] = $order_info['accept_language'];
-			$data['date_added'] = date($this->language->get('date_format_short'), strtotime($order_info['date_added']));
-			$data['date_modified'] = date($this->language->get('date_format_short'), strtotime($order_info['date_modified']));
+			$data['date_added'] = date($this->language->get('datetime_format'), strtotime($order_info['date_added']));
+			$data['date_modified'] = date($this->language->get('datetime_format'), strtotime($order_info['date_modified']));
 			
 			// Payment
 			$data['payment_fullname'] = $order_info['payment_fullname'];
@@ -1847,7 +1851,10 @@ class ControllerSellerOrder extends Controller {
 
 			$data['heading_title'] = $this->language->get('heading_title');
 
-			$data['text_not_found'] = $this->language->get('text_not_found');
+            $data['text_error'] = $this->language->get('text_error');
+            $data['text_not_found'] = $this->language->get('text_not_found');
+            $data['button_continue'] = $this->language->get('button_continue');
+            $data['continue'] = $this->url->link('seller/order', '', 'SSL');
 
 			$data['breadcrumbs'] = array();
 
@@ -1866,11 +1873,18 @@ class ControllerSellerOrder extends Controller {
 				'href' => $this->url->link('error/not_found', '', 'SSL')
 			);
 
-			$data['header'] = $this->load->controller('common/header');
-			$data['column_left'] = $this->load->controller('common/column_left');
-			$data['footer'] = $this->load->controller('common/footer');
+            $data['column_left'] = $this->load->controller('common/column_left');
+            $data['column_right'] = $this->load->controller('common/column_right');
+            $data['content_top'] = $this->load->controller('common/content_top');
+            $data['content_bottom'] = $this->load->controller('common/content_bottom');
+            $data['footer'] = $this->load->controller('common/footer');
+            $data['header'] = $this->load->controller('common/header');
 
-			$this->response->setOutput($this->load->view('error/not_found.tpl', $data));
+            if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/error/not_found.tpl')) {
+                $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/error/not_found.tpl', $data));
+            } else {
+                $this->response->setOutput($this->load->view('default/template/error/not_found.tpl', $data));
+            }
 		}
 	}
 
@@ -1887,9 +1901,14 @@ class ControllerSellerOrder extends Controller {
 
 		$json = array();
 
-		if (!$this->user->hasPermission('modify', 'seller/order')) {
-			$json['error'] = $this->language->get('error_permission');
-		} elseif (isset($this->request->get['order_id'])) {
+        if (!$this->customer->isLogged()) {
+            $json['error'] = 'please login first!';
+        }
+        if (!$this->customer->isSeller()) {
+            $json['error'] = 'error permission!';
+        }
+
+		if (!$json && isset($this->request->get['order_id'])) {
 			if (isset($this->request->get['order_id'])) {
 				$order_id = $this->request->get['order_id'];
 			} else {

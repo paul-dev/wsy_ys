@@ -387,12 +387,13 @@ class ControllerAccountOrder extends Controller {
 
 			$data['order_id'] = $this->request->get['order_id'];
 			$data['date_added'] = date($this->language->get('date_format_short'), strtotime($order_info['date_added']));
+            $data['store_name'] = $order_info['store_name'];
 
 			if ($order_info['payment_address_format']) {
 				$format = $order_info['payment_address_format'];
 			} else {
-				$format = '{fullname}{telephone}' . "\n" . '{company}' . "\n" . '{address}' . "\n" . '{area}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
-			}
+                $format = '{country}{zone}{city}{area}' . "\n" . '地址: {address}' . "\n" . '公司: {company}' . "\n" . '邮编: {postcode}' . "\n" . '姓名: {fullname}' . "\n" . '电话: {telephone}';
+            }
 
 			$find = array(
 				'{fullname}',
@@ -412,12 +413,12 @@ class ControllerAccountOrder extends Controller {
                 'telephone' => isset($order_info['payment_custom_field'][1]) ? ', '.$order_info['payment_custom_field'][1] : '',
 				'company'   => $order_info['payment_company'],
 				'address' => $order_info['payment_address'],
-                'area'      => $order_info['payment_area'],
-                'city'      => $order_info['payment_city'],
+                'area'      => $order_info['payment_area'] ? ', '.$order_info['payment_area'] : '',
+                'city'      => $order_info['payment_city'] ? ', '.$order_info['payment_city'] : '',
 				'postcode'  => $order_info['payment_postcode'],
-				'zone'      => $order_info['payment_zone'],
+				'zone'      => $order_info['payment_zone'] ? ', '.$order_info['payment_zone'] : '',
 				'zone_code' => $order_info['payment_zone_code'],
-				'country'   => $order_info['payment_country']
+				'country'   => $order_info['payment_country'] ? $order_info['payment_country'] : ''
 			);
 
 			$data['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
@@ -427,8 +428,9 @@ class ControllerAccountOrder extends Controller {
 			if ($order_info['shipping_address_format']) {
 				$format = $order_info['shipping_address_format'];
 			} else {
-				$format = '{fullname}{telephone}' . "\n" . '{company}' . "\n" . '{address}' . "\n" . '{area}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
-			}
+				//$format = '{fullname}{telephone}' . "\n" . '{company}' . "\n" . '{address}' . "\n" . '{area}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
+                $format = '{country}{zone}{city}{area}' . "\n" . '地址: {address}' . "\n" . '公司: {company}' . "\n" . '邮编: {postcode}' . "\n" . '姓名: {fullname}' . "\n" . '电话: {telephone}';
+            }
 
 			$find = array(
 				'{fullname}',
@@ -448,17 +450,19 @@ class ControllerAccountOrder extends Controller {
                 'telephone' => isset($order_info['shipping_custom_field'][1]) ? ', '.$order_info['shipping_custom_field'][1] : '',
                 'company'   => $order_info['shipping_company'],
 				'address' => $order_info['shipping_address'],
-                'area'      => $order_info['shipping_area'],
-                'city'      => $order_info['shipping_city'],
+                'area'      => $order_info['shipping_area'] ? $order_info['shipping_area'].', ' : '',
+                'city'      => $order_info['shipping_city'] ? $order_info['shipping_city'].', ' : '',
 				'postcode'  => $order_info['shipping_postcode'],
-				'zone'      => $order_info['shipping_zone'],
+				'zone'      => $order_info['shipping_zone'] ? $order_info['shipping_zone'].', ' : '',
 				'zone_code' => $order_info['shipping_zone_code'],
-				'country'   => $order_info['shipping_country']
+				'country'   => $order_info['shipping_country'] ? $order_info['shipping_country'].', ' : ''
 			);
 
 			$data['shipping_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
 
-			$data['shipping_method'] = $order_info['shipping_method'];
+            $data['shipping_method'] = $order_info['shipping_method'];
+            $data['shipping_type_code'] = $order_info['shipping_type_code'];
+            $data['shipping_type_name'] = $order_info['shipping_type_name'];
 
 			$this->load->model('catalog/product');
 			$this->load->model('tool/upload');

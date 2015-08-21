@@ -160,7 +160,11 @@
                                             <?php } ?>
                                             <input type="hidden" name="shipping_code[]" value="<?php echo $order['shipping_code']; ?>" /></td>
                                         <td class="text-left" colspan="6" style="background-color: #e8e8e8;border-right:none">
-                                        #<?php echo $order['order_id']; ?>, <?php echo $order['customer']; ?>, <?php echo $order['date_added']; ?>, <?php echo $order['total']; ?>
+                                        #<?php echo $order['order_id']; ?>,
+                                            <?php echo $order['shipping_type_name']; ?>,
+                                            <?php echo $order['customer']; ?>,
+                                            <?php echo $order['date_added']; ?>,
+                                            <?php echo $order['total']; ?>
                                         </td>
                                         <td class="text-right" colspan="1" style="background-color: #e8e8e8;border-left:none">
                                             <a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info" style="line-height: 10px; padding-top: 6px;"><i class="fa fa-eye"></i> 查看</a>

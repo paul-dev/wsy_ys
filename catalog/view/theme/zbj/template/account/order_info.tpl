@@ -37,11 +37,14 @@
               <b><?php echo $text_invoice_no; ?></b> <?php echo $invoice_no; ?><br />
               <?php } ?>
               <b><?php echo $text_order_id; ?></b> #<?php echo $order_id; ?><br />
-              <b><?php echo $text_date_added; ?></b> <?php echo $date_added; ?></td>
+              <b><?php echo $text_date_added; ?></b> <?php echo $date_added; ?><br />
+                <b>配送商家：</b> <?php echo $store_name; ?>
+            </td>
             <td class="text-left"><?php if ($payment_method) { ?>
               <b><?php echo $text_payment_method; ?></b> <?php echo $payment_method; ?><br />
               <?php } ?>
               <?php if ($shipping_method) { ?>
+                <b>配送类型：</b> <?php echo $shipping_type_name; ?><br/>
               <b><?php echo $text_shipping_method; ?></b> <?php echo $shipping_method; ?>
               <?php } ?></td>
           </tr>

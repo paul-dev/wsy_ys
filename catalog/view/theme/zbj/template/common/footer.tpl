@@ -578,7 +578,7 @@ function activeLiveChat(obj) {
                 </div>
                 <div class="footlist">
                     <div class="twodim-code">
-                        <img width="115" height="115" alt="服务号二维码" title="微信服务号" src="/catalog/view/theme/zbj/image/wx.jpg">
+                        <img width="115" height="115" alt="服务号二维码" title="微信服务号" src="/image/weixin.png">
                     </div>
                 </div>
         </div>

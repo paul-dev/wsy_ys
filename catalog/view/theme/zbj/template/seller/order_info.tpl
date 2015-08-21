@@ -66,7 +66,7 @@
                                     <?php if ($customer) { ?>
                                     <tr>
                                         <td><?php echo $text_customer; ?></td>
-                                        <td><a href="<?php echo $customer; ?>" target="_blank"><?php echo $fullname; ?></a></td>
+                                        <td><?php echo $fullname; ?></td>
                                     </tr>
                                     <?php } else { ?>
                                     <tr>
@@ -115,6 +115,14 @@
                                             <?php } ?></td>
                                     </tr>
                                     <?php } ?>
+                                    <tr>
+                                        <td>配送类型:</td>
+                                        <td><?php echo $shipping_type_name; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>配送方式:</td>
+                                        <td><?php echo $shipping_method; ?></td>
+                                    </tr>
                                     <?php if ($order_status) { ?>
                                     <tr>
                                         <td><?php echo $text_order_status; ?></td>
@@ -722,7 +730,7 @@
             <script type="text/javascript"><!--
                 $(document).delegate('#button-invoice', 'click', function() {
                     $.ajax({
-                        url: 'index.php?route=sale/order/createinvoiceno&order_id=<?php echo $order_id; ?>',
+                        url: 'index.php?route=seller/order/createinvoiceno&order_id=<?php echo $order_id; ?>',
                         dataType: 'json',
                         beforeSend: function() {
                             $('#button-invoice').button('loading');
@@ -809,7 +817,7 @@
 
                 $(document).delegate('#button-commission-add', 'click', function() {
                     $.ajax({
-                        url: 'index.php?route=sale/order/addcommission&order_id=<?php echo $order_id; ?>',
+                        url: 'index.php?route=seller/order/addcommission&order_id=<?php echo $order_id; ?>',
                         type: 'post',
                         dataType: 'json',
                         beforeSend: function() {
@@ -839,7 +847,7 @@
 
                 $(document).delegate('#button-commission-remove', 'click', function() {
                     $.ajax({
-                        url: 'index.php?route=sale/order/removecommission&order_id=<?php echo $order_id; ?>',
+                        url: 'index.php?route=seller/order/removecommission&order_id=<?php echo $order_id; ?>',
                         type: 'post',
                         dataType: 'json',
                         beforeSend: function() {
